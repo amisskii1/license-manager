@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Licenses</title>
+</head>
+<body>
+
+<div th:each="license : ${licenses}">
+    <a th:href="@{/licenses/{user_email}(user_email=${license.userEmail})}" th:text="${license.userEmail}">license</a>
+</div>>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>License</title>
+</head>
+<body>
+<p th:text="${license.licenseValue}"></p>
+<p th:text="${license.getLicenseStatus()}"></p>
+<p th:text="${license.getTrialStatus()}"></p>
+<p th:text="${license.getCreatedBy()}"></p>
+<p th:text="${license.getDateOfCreation()}"></p>
+<p th:text="${license.getExpiredDate()}"></p>
+</body>
+</html>
