@@ -2,16 +2,38 @@ package com.misskii.licensemanager.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.io.*;
 import java.security.*;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Component
 public class LicenseKeyGenerator {
 
     public static KeyPair generateECDSAKeyPair(int keySize) throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
-        keyPairGenerator.initialize(keySize);
-        return keyPairGenerator.generateKeyPair();
+        String filename = "ecdsa_keys";
+        File keyFile = new File(filename);
+
+        if (keyFile.length() == 0) {
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
+            keyPairGenerator.initialize(keySize);
+            KeyPair keyPair = keyPairGenerator.generateKeyPair();
+
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+                oos.writeObject(keyPair);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            return keyPair;
+        } else {
+            // If file is not empty, load the key pair from the file
+            try {
+                return loadECDSAKeyPairFromFile(filename);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private byte[] hashEmail(String userEmail) throws NoSuchAlgorithmException {
@@ -33,8 +55,13 @@ public class LicenseKeyGenerator {
 
     public String generateLicenseKey(String userEmail) throws Exception {
         byte[] hashedEmail = hashEmail(userEmail);
-        byte[] signature = signData(hashedEmail);
-        String licenseKey = encodeBase64(signature);
-        return licenseKey;
+        byte[] signature = signData(hashedEmail);;
+        return encodeBase64(signature);
+    }
+
+    public static KeyPair loadECDSAKeyPairFromFile(String filename) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            return (KeyPair) ois.readObject();
+        }
     }
 }
