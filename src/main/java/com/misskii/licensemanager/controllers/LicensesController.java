@@ -60,4 +60,22 @@ public class LicensesController {
         return "redirect:/licenses/new/" + userEmail;
     }
 
+    @GetMapping("/{user_email}/edit")
+    public String licenseUpdateForm(@PathVariable("user_email") String userEmail, Model model){
+        model.addAttribute("license", licenseService.findOne(userEmail));
+        return "edit";
+    }
+
+    @PatchMapping("/{user_email}")
+    public String licenseUpdate(@PathVariable("user_email") String userEmail, @ModelAttribute("license") License license){
+        licenseService.update(userEmail, license);
+        return "redirect:/licenses/" + license.getUserEmail();
+    }
+
+    @DeleteMapping("/{user_email}")
+    public String licenseDeletion(@PathVariable("user_email") String userEmail){
+        licenseService.delete(userEmail);
+        return "redirect:/licenses";
+    }
+
 }
