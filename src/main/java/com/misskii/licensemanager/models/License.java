@@ -1,5 +1,6 @@
 package com.misskii.licensemanager.models;
 
+import com.misskii.licensemanager.utils.LicenseKeyGenerator;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -36,8 +37,13 @@ public class License {
         return licenseValue;
     }
 
-    public void setLicenseValue(String licenseValue) {
-        this.licenseValue = licenseValue;
+    public void setLicenseValue(String userEmail) {
+        LicenseKeyGenerator keyGenerator = new LicenseKeyGenerator();
+        try {
+            this.licenseValue = keyGenerator.generateLicenseKey(userEmail);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getLicenseStatus() {

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new license</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/licenses}" th:object="${license}">
+    <label for="licenseValue">License Value:</label>
+    <input type="text" id="licenseValue" th:field="*{licenseValue}" readonly="readonly"/>
+    <br/>
+    <label for="UserEmail">User email:</label>
+    <input type="text" id="UserEmail" th:field="*{userEmail}" readonly="readonly"/>
+    <br/>
+    <label for="licenseStatus">License status: </label>
+    <input type="text" id="licenseStatus" th:field="*{licenseStatus}"/>
+    <br/>
+    <label for="trialStatus">Trial status: </label>
+    <input type="text" id="trialStatus" th:field="*{trialStatus}"/>
+    <br/>
+    <label for="author">Created by: </label>
+    <input type="text" id="author" th:field="*{createdBy}"/>
+    <br/>
+    <label for="createdAt">date of creation: </label>
+    <input type="text" id="createdAt" th:field="*{dateOfCreation}"/>
+    <br/>
+    <label for="exp">date of expired: </label>
+    <input type="text" id="exp" th:field="*{expiredDate}"/>
+
+    <input type="submit" value="Create!"/>
+</form>
+
+</body>
+</html>
