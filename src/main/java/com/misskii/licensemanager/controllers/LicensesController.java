@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequestMapping("/licenses")
 public class LicensesController {
@@ -37,8 +39,13 @@ public class LicensesController {
 
     @GetMapping("/new/{user_email}")
     public String licenseCreationForm(@PathVariable("user_email") String userEmail, @ModelAttribute("license") License license){
+        LocalDateTime localDateTime = LocalDateTime.now();
         license.setUserEmail(userEmail);
         license.setLicenseValue(license.getUserEmail());
+        license.setCreatedBy("admin");
+        license.setDateOfCreation(localDateTime);
+        license.setTrialStatus("Cancelled");
+        license.setLicenseStatus("Active");
         return "new";
     }
 
