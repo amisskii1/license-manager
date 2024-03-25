@@ -9,6 +9,10 @@
 <div th:each="license : ${licenses}">
     <a th:href="@{/licenses/{user_email}(user_email=${license.userEmail})}" th:text="${license.userEmail}">license</a>
 </div>>
+<br/>
+<hr/>
+
+<a href="/licenses/new"> Create new license </a>
 
 </body>
 </html>

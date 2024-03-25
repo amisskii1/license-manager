@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Update the license</title>
 </head>
 <body>
+
+<form th:method="PATCH" th:action="@{/licenses/{user_email}(user_email=${license.userEmail})}" th:object="${license}">
+    <label for="licenseValue">License Value:</label>
+    <input type="text" id="licenseValue" th:field="*{licenseValue}"/>
+    <br/>
+    <label for="UserEmail">User email:</label>
+    <input type="text" id="UserEmail" th:field="*{userEmail}"/>
+    <br/>
+    <label for="licenseStatus">License status: </label>
+    <input type="text" id="licenseStatus" th:field="*{licenseStatus}"/>
+    <br/>
+    <label for="trialStatus">Trial status: </label>
+    <input type="text" id="trialStatus" th:field="*{trialStatus}"/>
+    <br/>
+    <label for="author">Created by: </label>
+    <input type="text" id="author" th:field="*{createdBy}"/>
+    <br/>
+    <label for="createdAt">date of creation: </label>
+    <input type="text" id="createdAt" th:field="*{dateOfCreation}"/>
+    <br/>
+    <label for="exp">date of expired: </label>
+    <input type="text" id="exp" th:field="*{expiredDate}"/>
+
+    <input type="submit" value="Update"/>
+</form>
 
 </body>
 </html>
