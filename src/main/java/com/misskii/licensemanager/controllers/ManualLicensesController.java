@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/licenses")
-public class LicensesController {
+public class ManualLicensesController {
     private final LicenseService licenseService;
 
     @Autowired
-    public LicensesController(LicenseService licenseService) {
+    public ManualLicensesController(LicenseService licenseService) {
         this.licenseService = licenseService;
     }
 
