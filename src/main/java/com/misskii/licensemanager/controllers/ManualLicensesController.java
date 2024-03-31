@@ -2,7 +2,12 @@ package com.misskii.licensemanager.controllers;
 
 import com.misskii.licensemanager.models.License;
 import com.misskii.licensemanager.services.LicenseService;
+import com.misskii.licensemanager.utils.LicenseErrorResponse;
+import com.misskii.licensemanager.utils.LicenseNotCreatedException;
+import com.misskii.licensemanager.utils.LicenseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +83,12 @@ public class ManualLicensesController {
     public String licenseDeletion(@PathVariable("user_email") String userEmail){
         licenseService.delete(userEmail);
         return "redirect:/licenses";
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<LicenseErrorResponse> handelException(LicenseNotFoundException e){
+        LicenseErrorResponse licenseErrorResponse = new LicenseErrorResponse("User with this email wasn't found", System.currentTimeMillis());
+        return new ResponseEntity<>(licenseErrorResponse, HttpStatus.NOT_FOUND);
     }
 
 }

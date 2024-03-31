@@ -2,6 +2,8 @@ package com.misskii.licensemanager.services;
 
 import com.misskii.licensemanager.models.License;
 import com.misskii.licensemanager.repositories.LicenseRepository;
+import com.misskii.licensemanager.utils.LicenseNotCreatedException;
+import com.misskii.licensemanager.utils.LicenseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,7 @@ public class LicenseService {
     }
 
     public License findOne(String userEmail){
-        return licenseRepository.findById(userEmail).orElse(null);
+        return licenseRepository.findById(userEmail).orElseThrow(LicenseNotFoundException::new);
     }
 
     @Transactional
@@ -53,7 +55,7 @@ public class LicenseService {
             enrichTrialLicense(license);
             save(license);
         }else {
-            // TODO error message
+            throw new LicenseNotCreatedException();
         }
     }
 
