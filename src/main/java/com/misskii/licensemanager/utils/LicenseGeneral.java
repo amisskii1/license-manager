@@ -11,13 +11,13 @@ import java.util.Base64;
 
 @Component
 public class LicenseGeneral {
-    KeyPair getECDSAKeyPair(int keySize) throws NoSuchAlgorithmException {
+    KeyPair getECDSAKeyPair() throws NoSuchAlgorithmException {
         String filename = "ecdsa_keys";
         File keyFile = new File(filename);
 
         if (keyFile.length() == 0) {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
-            keyPairGenerator.initialize(keySize);
+            keyPairGenerator.initialize(256);
             KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
             try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
@@ -43,6 +43,10 @@ public class LicenseGeneral {
 
     String encodeBase64(byte[] data) {
         return Base64.getEncoder().encodeToString(data);
+    }
+
+    byte[] decodeBase64(String license){
+        return Base64.getDecoder().decode(license);
     }
 
     KeyPair loadECDSAKeyPairFromFile(String filename) throws IOException, ClassNotFoundException {

@@ -2,7 +2,12 @@ package com.misskii.licensemanager.controllers;
 
 import com.misskii.licensemanager.models.License;
 import com.misskii.licensemanager.services.LicenseService;
+import com.misskii.licensemanager.utils.LicenseErrorResponse;
+import com.misskii.licensemanager.utils.LicenseNotCreatedException;
+import com.misskii.licensemanager.utils.LicenseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +16,11 @@ import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/licenses")
-public class LicensesController {
+public class ManualLicensesController {
     private final LicenseService licenseService;
 
     @Autowired
-    public LicensesController(LicenseService licenseService) {
+    public ManualLicensesController(LicenseService licenseService) {
         this.licenseService = licenseService;
     }
 
@@ -33,6 +38,8 @@ public class LicensesController {
 
     @PostMapping()
     public String create(@ModelAttribute("license") License license){
+        System.out.println(license.getUserEmail());
+        System.out.println(license.getLicenseValue());
         licenseService.save(license);
         return  "redirect:/licenses";
     }
@@ -41,7 +48,7 @@ public class LicensesController {
     public String licenseCreationForm(@PathVariable("user_email") String userEmail, @ModelAttribute("license") License license){
         LocalDateTime localDateTime = LocalDateTime.now();
         license.setUserEmail(userEmail);
-        license.setLicenseValue(license.getUserEmail());
+        license.generateLicense(license.getUserEmail());
         license.setCreatedBy("admin");
         license.setDateOfCreation(localDateTime);
         license.setTrialStatus("Cancelled");
@@ -76,6 +83,12 @@ public class LicensesController {
     public String licenseDeletion(@PathVariable("user_email") String userEmail){
         licenseService.delete(userEmail);
         return "redirect:/licenses";
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<LicenseErrorResponse> handelException(LicenseNotFoundException e){
+        LicenseErrorResponse licenseErrorResponse = new LicenseErrorResponse("User with this email wasn't found", System.currentTimeMillis());
+        return new ResponseEntity<>(licenseErrorResponse, HttpStatus.NOT_FOUND);
     }
 
 }

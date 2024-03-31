@@ -37,13 +37,14 @@ public class License {
         return licenseValue;
     }
 
-    public void setLicenseValue(String userEmail) {
+    public String generateLicense(String userEmail) {
         LicenseKeyGenerator keyGenerator = new LicenseKeyGenerator();
-        try {
-            this.licenseValue = keyGenerator.generateLicenseKey(userEmail);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        this.licenseValue = keyGenerator.generateLicenseKey(userEmail);
+        return this.licenseValue;
+    }
+
+    public void setLicenseValue(String licenseValue) {
+        this.licenseValue = licenseValue;
     }
 
     public String getLicenseStatus() {
