@@ -8,11 +8,7 @@ public class LicenseErrorResponse {
         this.errorMessage = errorMessage;
         this.timestamp = timestamp;
     }
-
-    public LicenseErrorResponse() {
-
-    }
-
+    
     public String getErrorMessage() {
         return errorMessage;
     }
