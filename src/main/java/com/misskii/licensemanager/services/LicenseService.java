@@ -2,9 +2,6 @@ package com.misskii.licensemanager.services;
 
 import com.misskii.licensemanager.models.License;
 import com.misskii.licensemanager.repositories.LicenseRepository;
-import jakarta.persistence.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +60,7 @@ public class LicenseService {
     public void enrichTrialLicense(License license){
         license.setLicenseStatus("Active");
         license.setTrialStatus("Active");
-        license.setLicenseValue(license.getUserEmail());
+        license.setLicenseValue(license.generateLicense(license.getUserEmail()));
         license.setDateOfCreation(LocalDateTime.now());
         license.setCreatedBy("Trial");
         license.setExpiredDate(LocalDateTime.now().plusDays(7));

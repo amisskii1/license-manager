@@ -14,9 +14,19 @@ public class LicenseKeyGenerator extends LicenseGeneral {
         return signature.sign();
     }
 
-    public String generateLicenseKey(String userEmail) throws Exception {
-        byte[] hashedEmail = hashEmail(userEmail);
-        byte[] signature = signData(hashedEmail);;
+    public String generateLicenseKey(String userEmail){
+        byte[] hashedEmail;
+        try {
+            hashedEmail = hashEmail(userEmail);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] signature;
+        try {
+            signature = signData(hashedEmail);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return encodeBase64(signature);
     }
 }

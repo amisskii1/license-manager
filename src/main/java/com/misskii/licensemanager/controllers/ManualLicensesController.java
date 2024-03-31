@@ -33,6 +33,8 @@ public class ManualLicensesController {
 
     @PostMapping()
     public String create(@ModelAttribute("license") License license){
+        System.out.println(license.getUserEmail());
+        System.out.println(license.getLicenseValue());
         licenseService.save(license);
         return  "redirect:/licenses";
     }
@@ -41,7 +43,7 @@ public class ManualLicensesController {
     public String licenseCreationForm(@PathVariable("user_email") String userEmail, @ModelAttribute("license") License license){
         LocalDateTime localDateTime = LocalDateTime.now();
         license.setUserEmail(userEmail);
-        license.setLicenseValue(license.getUserEmail());
+        license.generateLicense(license.getUserEmail());
         license.setCreatedBy("admin");
         license.setDateOfCreation(localDateTime);
         license.setTrialStatus("Cancelled");

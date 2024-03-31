@@ -1,7 +1,9 @@
 package com.misskii.licensemanager.utils;
 
+import com.misskii.licensemanager.models.License;
 import org.springframework.stereotype.Component;
 import java.security.*;
+import java.time.LocalDateTime;
 
 @Component
 public class LicenseKeyValidator extends LicenseGeneral{
@@ -20,4 +22,7 @@ public class LicenseKeyValidator extends LicenseGeneral{
         }
     }
 
+    public boolean doesLicenseExpired(License license){
+        return LocalDateTime.now().isBefore(license.getExpiredDate());
+    }
 }

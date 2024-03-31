@@ -35,7 +35,9 @@ public class RestLicensesController {
 
     @PostMapping("/validate")
     public boolean validateLicense(@RequestBody LicenseDTO licenseDTO){
-        return licenseKeyValidator.verifySignature(licenseDTO.getUserEmail(), licenseDTO.getLicenseValue());
+
+        return licenseKeyValidator.verifySignature(licenseDTO.getUserEmail(), licenseDTO.getLicenseValue())
+                && licenseKeyValidator.doesLicenseExpired(licenseService.findOne(convertToLicense(licenseDTO).getUserEmail()));
     }
 
     private License convertToLicense(LicenseDTO licenseDTO) {
