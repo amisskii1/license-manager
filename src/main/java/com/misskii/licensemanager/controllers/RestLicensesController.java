@@ -27,9 +27,9 @@ public class RestLicensesController {
     }
 
     @PostMapping("/trial")
-    public ResponseEntity<HttpStatus> createTrialLicense(@RequestBody LicenseDTO licenseDTO){
-        licenseService.createTrialLicense(convertToLicense(licenseDTO));
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<LicenseDTO> createTrialLicense(@RequestBody LicenseDTO licenseDTO){
+            licenseDTO.setLicenseValue( licenseService.createTrialLicense(convertToLicense(licenseDTO)));
+        return new ResponseEntity<>(licenseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/validate")
