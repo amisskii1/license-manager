@@ -26,7 +26,7 @@ public class LicenseService {
     }
 
     public License findOne(String userEmail){
-        return licenseRepository.findById(userEmail).orElseThrow(LicenseNotFoundException::new);
+        return licenseRepository.findById(userEmail).orElse(null);
     }
 
     @Transactional
@@ -50,13 +50,14 @@ public class LicenseService {
     }
 
     @Transactional
-    public void createTrialLicense(License license) {
+    public String createTrialLicense(License license) {
         if (!doesUserExist(license.getUserEmail())){
             enrichTrialLicense(license);
             save(license);
         }else {
             throw new LicenseNotCreatedException();
         }
+        return license.getLicenseValue();
     }
 
     public void enrichTrialLicense(License license){
