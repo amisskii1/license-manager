@@ -39,7 +39,7 @@ public class RestLicensesController {
             licenseStatus = "valid";
         } else licenseStatus = "invalid";
         licenseDTO.setLicenseStatus(licenseStatus);
-        licenseDTO.setLicenseStatus(licenseStatus);
+        licenseDTO.setExpiredDate(licenseService.findOne(licenseDTO.getUserEmail()).getExpiredDate());
         licenseService.updateLicenseStatus(licenseDTO.getUserEmail(), licenseStatus);
         return new ResponseEntity<>(licenseDTO, HttpStatus.OK);
     }
