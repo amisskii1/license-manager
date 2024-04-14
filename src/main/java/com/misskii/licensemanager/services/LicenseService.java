@@ -3,7 +3,6 @@ package com.misskii.licensemanager.services;
 import com.misskii.licensemanager.models.License;
 import com.misskii.licensemanager.repositories.LicenseRepository;
 import com.misskii.licensemanager.utils.LicenseNotCreatedException;
-import com.misskii.licensemanager.utils.LicenseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +40,11 @@ public class LicenseService {
     }
 
     @Transactional
+    public void updateLicenseStatus(String email,String status){
+        licenseRepository.findById(email).get().setLicenseStatus(status);
+    }
+
+    @Transactional
     public void delete(String userEmail){
         licenseRepository.deleteById(userEmail);
     }
@@ -61,11 +65,11 @@ public class LicenseService {
     }
 
     public void enrichTrialLicense(License license){
-        license.setLicenseStatus("Active");
-        license.setTrialStatus("Active");
+        license.setLicenseStatus("unknown");
+        license.setTrialStatus("true");
         license.setLicenseValue(license.generateLicense(license.getUserEmail()));
         license.setDateOfCreation(LocalDateTime.now());
-        license.setCreatedBy("Trial");
+        license.setCreatedBy("trials manager");
         license.setExpiredDate(LocalDateTime.now().plusDays(7));
     }
 

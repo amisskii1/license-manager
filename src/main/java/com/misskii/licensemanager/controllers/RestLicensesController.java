@@ -6,7 +6,6 @@ import com.misskii.licensemanager.services.LicenseService;
 import com.misskii.licensemanager.utils.LicenseErrorResponse;
 import com.misskii.licensemanager.utils.LicenseKeyValidator;
 import com.misskii.licensemanager.utils.LicenseNotCreatedException;
-import com.misskii.licensemanager.utils.LicenseNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,14 +27,21 @@ public class RestLicensesController {
 
     @PostMapping("/trial")
     public ResponseEntity<LicenseDTO> createTrialLicense(@RequestBody LicenseDTO licenseDTO){
-            licenseDTO.setLicenseValue( licenseService.createTrialLicense(convertToLicense(licenseDTO)));
+            licenseDTO.setLicenseValue(licenseService.createTrialLicense(convertToLicense(licenseDTO)));
         return new ResponseEntity<>(licenseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/validate")
-    public boolean validateLicense(@RequestBody LicenseDTO licenseDTO){
-        return licenseKeyValidator.verifySignature(licenseDTO.getUserEmail(), licenseDTO.getLicenseValue())
-                && licenseKeyValidator.doesLicenseExpired(licenseService.findOne(convertToLicense(licenseDTO).getUserEmail()));
+    public ResponseEntity<LicenseDTO> validateLicense(@RequestBody LicenseDTO licenseDTO){
+        String licenseStatus;
+        if (licenseKeyValidator.verifySignature(licenseService.findOne(convertToLicense(licenseDTO).getUserEmail()))
+            && licenseKeyValidator.doesLicenseExpired(licenseService.findOne(convertToLicense(licenseDTO).getUserEmail()))) {
+            licenseStatus = "valid";
+        } else licenseStatus = "invalid";
+        licenseDTO.setLicenseStatus(licenseStatus);
+        licenseDTO.setLicenseStatus(licenseStatus);
+        licenseService.updateLicenseStatus(licenseDTO.getUserEmail(), licenseStatus);
+        return new ResponseEntity<>(licenseDTO, HttpStatus.OK);
     }
 
     @ExceptionHandler
