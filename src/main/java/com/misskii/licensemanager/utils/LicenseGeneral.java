@@ -7,6 +7,9 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
 @Component
@@ -36,9 +39,12 @@ public class LicenseGeneral {
         }
     }
 
-    byte[] hashEmail(String userEmail) throws NoSuchAlgorithmException {
+    byte[] hashEmail(String userEmail, LocalDateTime dateOfCreation) throws NoSuchAlgorithmException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        String emailWithTimestamp = userEmail + dateOfCreation.format(formatter);
+        System.out.println(dateOfCreation.format(formatter));
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        return digest.digest(userEmail.getBytes());
+        return digest.digest(emailWithTimestamp.getBytes());
     }
 
     String encodeBase64(byte[] data) {

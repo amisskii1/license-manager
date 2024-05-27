@@ -37,9 +37,9 @@ public class License {
         return licenseValue;
     }
 
-    public String generateLicense(String userEmail) {
+    public String generateLicense(String userEmail, LocalDateTime dateOfCreation) {
         LicenseKeyGenerator keyGenerator = new LicenseKeyGenerator();
-        this.licenseValue = keyGenerator.generateLicenseKey(userEmail);
+        this.licenseValue = keyGenerator.generateLicenseKey(userEmail, dateOfCreation);
         return this.licenseValue;
     }
 

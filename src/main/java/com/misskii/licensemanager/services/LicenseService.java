@@ -67,9 +67,9 @@ public class LicenseService {
     public void enrichTrialLicense(License license){
         license.setLicenseStatus("unknown");
         license.setTrialStatus("true");
-        license.setLicenseValue(license.generateLicense(license.getUserEmail()));
-        license.setDateOfCreation(LocalDateTime.now());
+        license.setDateOfCreation(LocalDateTime.now().withSecond(0).withNano(0));
         license.setCreatedBy("trials manager");
+        license.setLicenseValue(license.generateLicense(license.getUserEmail(), license.getDateOfCreation()));
         license.setExpiredDate(LocalDateTime.now().plusDays(7));
     }
 

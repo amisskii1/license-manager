@@ -13,7 +13,7 @@ public class LicenseKeyValidator extends LicenseGeneral{
         Signature ecdsaSignature;
         try {
             publicKey = getECDSAKeyPair().getPublic();
-            byte[] data = hashEmail(license.getUserEmail());
+            byte[] data = hashEmail(license.getUserEmail(), license.getDateOfCreation());
             ecdsaSignature = Signature.getInstance("SHA256withECDSA");
             ecdsaSignature.initVerify(publicKey);
             ecdsaSignature.update(data);

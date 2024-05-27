@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/licenses")
@@ -44,13 +46,13 @@ public class ManualLicensesController {
 
     @GetMapping("/new/{user_email}")
     public String licenseCreationForm(@PathVariable("user_email") String userEmail, @ModelAttribute("license") License license){
-        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime localDateTime = LocalDateTime.now().withSecond(0).withNano(0);;
         license.setUserEmail(userEmail);
-        license.generateLicense(license.getUserEmail());
         license.setCreatedBy("admin");
         license.setDateOfCreation(localDateTime);
         license.setTrialStatus("false");
         license.setLicenseStatus("unknown");
+        license.generateLicense(license.getUserEmail(), license.getDateOfCreation());
         return "new";
     }
 

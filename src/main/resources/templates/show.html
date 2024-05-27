@@ -5,13 +5,15 @@
     <title>License</title>
 </head>
 <body>
-<p th:text="${license.userEmail}"></p>
-<p th:text="${license.licenseValue}"></p>
-<p th:text="${license.getLicenseStatus()}"></p>
-<p th:text="${license.getTrialStatus()}"></p>
-<p th:text="${license.getCreatedBy()}"></p>
-<p th:text="${license.getDateOfCreation()}"></p>
-<p th:text="${license.getExpiredDate()}"></p>
+<h1>License Information</h1>
+
+<p><strong>User Email:</strong> <span th:text="${license.userEmail}">[userEmail]</span></p>
+<p><strong>License Value:</strong> <span th:text="${license.licenseValue}">[licenseValue]</span></p>
+<p><strong>License Status:</strong> <span th:text="${license.getLicenseStatus()}">[licenseStatus]</span></p>
+<p><strong>Trial Status:</strong> <span th:text="${license.getTrialStatus()}">[trialStatus]</span></p>
+<p><strong>Created By:</strong> <span th:text="${license.getCreatedBy()}">[createdBy]</span></p>
+<p><strong>Date Of Creation:</strong> <span th:text="${license.getDateOfCreation()}">[dateOfCreation]</span></p>
+<p><strong>Expiration Date:</strong> <span th:text="${license.getExpiredDate()}">[expiredDate]</span></p>
 
 <a th:href="@{/licenses/{user_email}/edit(user_email=${license.userEmail})}">Edit</a>
 <form th:method="DELETE" th:action="@{/licenses/{user_email}(user_email=${license.userEmail})}" th:object="${license}">
